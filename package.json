@@ -1,0 +1,26 @@
+{
+  "name": "log-debug",
+  "version": "1.0.0",
+  "description": "Logguer like Angular.js for node",
+  "main": "index.js",
+  "scripts": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/romakita/log-debug"
+  },
+  "keywords": [
+    "log",
+    "debug"
+  ],
+  "author": "Romakita",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/romakita/log-debug/issues"
+  },
+  "homepage": "https://github.com/romakita/log-debug",
+  "dependencies": {
+    "colors": "^1.1.0"
+  }
+}
