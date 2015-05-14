@@ -1,7 +1,7 @@
 {
   "name": "log-debug",
   "version": "1.0.0",
-  "description": "Logguer like Angular.js for node",
+  "description": "Logger like Angular.js for node",
   "main": "index.js",
   "scripts": {
 
