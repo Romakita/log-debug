@@ -54,9 +54,12 @@ GLOBAL.$log = module.exports = {
 
             for(var key in arguments){
                 o.push(arguments[key]);
+                if(arguments[key] instanceof Error){
+                    o.push(arguments[key].stack)
+                }
             }
 
-            return console.warn.apply(console, o);
+            return console.error.apply(console, o);
         }
     }
 };
