@@ -4,7 +4,8 @@ var debug=function(){
     if(!log) return;
     arguments.unshift(colors.blue('[INFO]'));
     return console.log.apply(console, arguments);
-}
+};
+
 GLOBAL.$log = module.exports = {
     /**
      * Start logguer
