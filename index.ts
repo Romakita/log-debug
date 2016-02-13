@@ -1,106 +1,117 @@
+import WritableStream = NodeJS.WritableStream;
+
 var util = require('util');
 var colors = require('colors/safe');
-var Logger = (function () {
+
+class Logger{
+    private logEnable = true;
+    public Logger;
+    private stderr:WritableStream;
+    private stdout:WritableStream;
+
     /**
      *
      * @param stdout
      * @param stderr
      */
-    function Logger(stdout, stderr) {
-        this.logEnable = true;
+    constructor(stdout?:WritableStream, stderr?:WritableStream){
         this.stderr = stderr || process.stderr;
         this.stdout = stdout || process.stdout;
     }
-    Logger.prototype._argsToString = function (name, data, args) {
+
+    private _argsToString(name, data, args:any[]):string{
+
         var message = name;
-        switch (typeof data) {
+
+        switch(typeof data){
             case "string":
-                if (args.length) {
+
+                if(args.length){
                     message += ' ' + util.format.apply([data].concat(args));
-                }
-                else {
+                }else{
                     message += ' ' + data;
                 }
+
                 break;
+
             default:
+
                 args.unshift(data);
-                for (var i = 0; i < args.length; i++) {
-                    if (typeof args[i] == "object") {
-                        if (args[i] instanceof Error) {
+
+                for(var i = 0; i < args.length; i++) {
+
+                    if(typeof args[i] == "object"){
+                        if(args[i] instanceof Error){
                             message += ' ' + args[i].toString() + ' ' + args[i].stack;
-                        }
-                        else {
+                        }else{
                             message += ' ' + util.format('%j', args[i]);
                         }
-                    }
-                    else {
+                    }else {
                         message += ' ' + args[i];
                     }
                 }
+
                 break;
         }
+
         return message + "\n";
-    };
+    }
     /**
      * Prints to stdout with newline. Multiple arguments can be passed, with the first used as the primary message and all additional used as substitution values similar to printf() (the arguments are all passed to util.format()).
      * @param args
      * @returns {any}
      */
-    Logger.prototype.debug = function (data) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
-        if (!this.logEnable)
-            return;
+    public debug(data, ...args){
+
+        if(!this.logEnable) return;
+
         this.stdout.write(this._argsToString(colors.blue('[DEBUG]'), data, args));
+
         return this;
-    };
+    }
+
     /**
      *
      * @param args
      * @returns {any}
      */
-    Logger.prototype.info = function (data) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
-        if (!this.logEnable)
-            return;
+    public info(data, ...args){
+
+        if(!this.logEnable) return;
+
         this.stdout.write(this._argsToString(colors.blue('[INFO]'), data, args));
+
         return this;
-    };
+    }
+
     /**
      *
      * @param args
      * @returns {any}
      */
-    Logger.prototype.warn = function (data) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
-        if (!this.logEnable)
-            return;
+    public warn(data, ...args){
+
+        if(!this.logEnable) return;
+
         this.stderr.write(this._argsToString(colors.yellow('[WARN]'), data, args));
+
         return this;
-    };
+    }
+
     /**
      *
      * @param args
      * @returns {any}
      */
-    Logger.prototype.error = function (data) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
-        if (!this.logEnable)
-            return;
+    public error(data, ...args){
+
+        if(!this.logEnable) return;
+
         this.stderr.write(this._argsToString(colors.yellow('[ERROR]'), data, args));
+
         return this;
-    };
+    }
+
     /*public trace(data, ...args){
         if(!this.logEnable) return;
 
@@ -111,18 +122,18 @@ var Logger = (function () {
     /**
      *
      */
-    Logger.prototype.start = function () {
+    start(){
         this.logEnable = true;
-    };
+    }
+
     /**
      *
      */
-    Logger.prototype.stop = function () {
+    stop(){
         this.logEnable = false;
-    };
-    return Logger;
-})();
+    }
+}
+
 var $log = new Logger();
+export = $log;
 $log.Logger = Logger;
-module.exports = $log;
-//# sourceMappingURL=index.js.map
