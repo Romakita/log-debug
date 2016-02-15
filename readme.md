@@ -97,7 +97,7 @@ Prints to stderr the string '[TRACE]', followed by the [util.format()](https://n
 
 ``` typescript
 $log.trace('Show me');
-  //  Trace: Show me
+  //[TRACE] Show me
   //    at Context.<anonymous> (/projects/log-debug/test/spec/log.spec.ts:251:45)
   //    at callFn (/projects/log-debug/node_modules/mocha/lib/runnable.js:315:21)
   //    at Test.Runnable.run (/projects/log-debug/node_modules/mocha/lib/runnable.js:308:7)
