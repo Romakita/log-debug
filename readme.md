@@ -4,36 +4,139 @@
 
 ## Features
 
- * `$log.debug(...args)` : print "[INFO] Message".
- * `$log.info(...args)` : print "[INFO] Message".
- * `$log.warn(...args)` : print "[WARN] Message".
- * `$log.error(...args)` : print "[ERROR] Message". 
- * `$log.error(new Error('my error'))` : print "[ERROR] ERROR stack trace".
- * `$log.start()` : Enable log.
- * `$log.stop()` : Disable log.
+ * Prints info, debug, warn or error message with colorization.
+ * Prints stack trace with Logger.trace() or Logger.withTrace().
+ * Change stdout & stderr WritableStream.
 
 ## Installation
 ```bash
-$ npm install -g typescript typings 
+$ npm install -g typings 
 $ npm install log-debug
 ```
+
 ## API
+### Class: Logger
 
+The Logger class can be used to create a simple logger with configurable output streams and can be accessed using either `import * as $log from 'log-debug'` or `var $log = require('debug-log')`.
 
-``` javascript
-   var $log = require('log-debug');
+###### In TypeScript
+``` typescript
+import * as $log from "log-debug";
 
-   $log.debug('test') // => [INFO] test
-   $log.debug({test:test}) // => [INFO] {test:test}
-   
-   $log.warn('test') // => [WARN] test
-   $log.warn({test:test}) // => [WARN] {test:test}
-   
-   $log.error('test') // => [ERROR] test
-   $log.error({test:test}) // => [ERROR] {test:test}
-   
+$log.debug('Test').
 ```
 
+###### In JavaScript
+``` typescript
+var $log = require('log-debug');
+
+$log.debug('Test').
+```
+
+### new Logger(stdout[, stderr [, noColors]])
+**stdout**: `NodeJS.WritableStream`
+**stderr**: `NodeJS.WritableStream`
+**noColors**: `boolean`
+
+Creates a new `Logger` by passing one or two writable stream instances. `stdout` is a writable stream to print log or info output. `stderr` is used for warning or error output. If `stderr` isn't passed, the warning and error output will be sent to the stdout`.
+
+``` typescript
+import * as Fs from "fs";
+import * as $log from "log-debug";
+
+const output = Fs.createWriteStream('./stdout.log');
+const errorOutput = Fs.createWriteStream('./stderr.log');
+
+// custom simple logger
+const logger = new $log.Logger(output, errorOutput);
+
+// use it like console
+var count = 5;
+logger.debug('count: %d', count);
+// in stdout.log: count 5
+```
+
+The `$log` is a special `Logger` whose output is sent to `process.stdout` and `process.stderr`. It is equivalent to calling:
+
+```typescript
+new $log.Logger(process.stdout, process.stderr);
+```
+
+#### Logger.debug(...args)
+**args**: `any[]`
+
+Prints to stdout with newline. Multiple arguments can be passed, with the first used as the primary message and all additional used as substitution values similar to printf() (the arguments are all passed to [util.format()](https://nodejs.org/api/util.html#util_util_format_format)). 
+
+``` typescript
+import * as $log from 'log-debug';
+   
+$log.debug('test');                        //[DEBUG] test
+$log.debug({test:'test'});                 //[DEBUG] {'test':'test}
+$log.debug('Format %j', {test:'test'});    //[DEBUG] Format {'test':'test}
+   
+//With stacktrace
+$log.debug('test').withTrace();            //[DEBUG] test
+                                           //        at Context.<anonymous> (/directory/file.ts:80:10)
+                                           //        at ...
+//With line only
+$log.debug('test').withLine();             //[DEBUG] test
+                                           //        at (/directory/file.ts:80:10)
+```   
+
+If formatting elements (e.g. %j) are not found in the first string then [util.inspect()](https://nodejs.org/api/util.html#util_util_inspect_inspect) is called on each argument and the resulting string values are concatenated. See [util.format()](https://nodejs.org/api/util.html#util_util_format_format) for more information. 
+
+#### Logger.info(...args)
+**args**: `any[]`
+The Logger.info() function is an alias for Logger.debug(). 
+
+
+#### Logger.trace(...args)
+**args**: `any[]`
+
+Prints to stderr the string '[TRACE]', followed by the [util.format()](https://nodejs.org/api/util.html#util_util_format_format) formatted message and stack trace to the current position in the code.
+
+``` typescript
+$log.trace('Show me');
+  //  Trace: Show me
+  //    at Context.<anonymous> (/projects/log-debug/test/spec/log.spec.ts:251:45)
+  //    at callFn (/projects/log-debug/node_modules/mocha/lib/runnable.js:315:21)
+  //    at Test.Runnable.run (/projects/log-debug/node_modules/mocha/lib/runnable.js:308:7)
+  //    at Runner.runTest (/projects/log-debug/node_modules/mocha/lib/runner.js:422:10)
+  //    at /projects/log-debug/node_modules/mocha/lib/runner.js:533:12
+  //    at next (/projects/log-debug/node_modules/mocha/lib/runner.js:342:14)
+  //    at /projects/log-debug/node_modules/mocha/lib/runner.js:352:7
+  //    at next (/projects/log-debug/node_modules/mocha/lib/runner.js:284:14)
+  //    at Immediate._onImmediate (/projects/log-debug/node_modules/mocha/lib/runner.js:320:5)
+  //    at processImmediate [as _immediateCallback] (timers.js:383:17)
+```
+
+
+#### Logger.error(...args)
+**args**: `any[]`
+
+Prints to stderr with newline. Multiple arguments can be passed, with the first used as the primary message and all additional used as substitution values similar to printf() (the arguments are all passed to [util.format()](https://nodejs.org/api/util.html#util_util_format_format)). 
+
+``` typescript
+import * as $log from 'log-debug';
+   
+$log.error('test');                        //[ERROR] test
+$log.error({test:'test'});                 //[ERROR] {'test':'test}
+$log.error('Format %j', {test:'test'});    //[ERROR] Format {'test':'test}
+   
+//With stacktrace
+$log.error('test').withTrace();            //[ERROR] test
+                                           //        at Context.<anonymous> (/directory/file.ts:80:10)
+                                           //        at ...
+//With line only
+$log.error('test').withLine();             //[ERROR] test
+                                           //        at (/directory/file.ts:80:10)
+```   
+
+If formatting elements (e.g. %j) are not found in the first string then [util.inspect()](https://nodejs.org/api/util.html#util_util_inspect_inspect) is called on each argument and the resulting string values are concatenated. See [util.format()](https://nodejs.org/api/util.html#util_util_format_format) for more information. 
+
+#### Logger.warn(...args)
+**args**: `any[]`
+The Logger.warn() function is an alias for Logger.error(). 
 
 ## Test
 
