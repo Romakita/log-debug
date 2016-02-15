@@ -1,6 +1,6 @@
 # log-debug [![Build Status](https://travis-ci.org/Romakita/httpexceptions.svg?branch=master)](https://travis-ci.org/Romakita/httpexceptions)
 
-> Provide logger like angular.js and/or Log4j (Java) with colorization.
+> Provide logger written in TypeScript for TypeScript or JavaScript.
 
 ## Features
 
