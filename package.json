@@ -25,15 +25,13 @@
     "url": "https://github.com/romakita/log-debug/issues"
   },
   "homepage": "https://github.com/romakita/log-debug",
-
   "devDependencies": {
     "chai": "^2.1.0",
     "mocha": "^2.4.5",
     "typescript": "^1.7.5"
   },
-
   "dependencies": {
-    "colors": "^1.1.0"
+    "colors": "^1.1.0",
+    "source-map-support": "^0.4.0"
   }
-
 }
