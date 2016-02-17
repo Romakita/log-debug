@@ -187,7 +187,7 @@ class Logger{
 
         var message = Logger.createMessage(data, args);
 
-        this.previousStd.write(name + message);
+        this.previousStd.write(name + message + '\n');
 
         return this;
     }
@@ -203,38 +203,31 @@ class Logger{
 
         var message = '';
 
-        switch(typeof data){
-            case "string":
-
-                if(args.length && util.inspect(data)){
-                    message += ' ' + util.format.apply(util, [data].concat(args));
-                }else{
-                    message += ' ' + data;
-                }
-
-                break;
-
-            default:
-
-                args.unshift(data);
-
-                for(var i = 0; i < args.length; i++) {
-
-                    if(typeof args[i] == "object"){
-                        if(args[i] instanceof Error){
-                            message += ' ' + args[i].toString() + ' ' + args[i].stack.replace(args[i].toString(), '');
-                        }else{
-                            message += ' ' + util.format('%j', args[i]);
-                        }
-                    }else {
-                        message += ' ' + args[i];
-                    }
-                }
-
-                break;
+        if(typeof data == 'string'){
+            if(data.indexOf('%j') >-1){
+                return ' ' + util.format.apply(util, [data + ' \n'].concat(args));
+            }else{
+                message += ' ' + data;
+            }
+        }else{
+            args.unshift(data);
         }
 
-        return message + "\n";
+        for(var i = 0; i < args.length; i++) {
+
+            if(typeof args[i] == "object"){
+                if(args[i] instanceof Error){
+                    message += ' ' + args[i].toString() + ' ' + args[i].stack.replace(args[i].toString(), '');
+                }else{
+                    message += ' ' + util.format('%j', args[i]) + '\n';
+                }
+            }else {
+                message += ' ' + args[i];
+            }
+        }
+
+
+        return message;
     }
 
     /**
