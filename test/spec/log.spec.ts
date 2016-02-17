@@ -49,7 +49,7 @@ describe('Logger', function(){
             $log.debug('ézeffà^');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[DEBUG] ézeffà^\n');
+            expect(ioStream.read()).to.contain('[DEBUG] ézeffà^');
 
         });
 
@@ -61,7 +61,7 @@ describe('Logger', function(){
             $log.debug({test:'test'});
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[DEBUG] {"test":"test"}\n');
+            expect(ioStream.read()).to.contain('[DEBUG] {"test":"test"}');
 
 
         });
@@ -74,7 +74,7 @@ describe('Logger', function(){
             $log.debug('util.format(%j) => %s', {test:'test'}, '4');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[DEBUG] util.format({"test":"test"}) => 4\n');
+            expect(ioStream.read()).to.contain('[DEBUG] util.format({"test":"test"}) => 4');
 
         });
 
@@ -89,7 +89,7 @@ describe('Logger', function(){
             $log.info('ézeffà^');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[INFO] ézeffà^\n');
+            expect(ioStream.read()).to.contain('[INFO] ézeffà^');
 
         });
 
@@ -101,7 +101,7 @@ describe('Logger', function(){
             $log.info({test:'test'});
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[INFO] {"test":"test"}\n');
+            expect(ioStream.read()).to.contain('[INFO] {"test":"test"}');
 
 
         });
@@ -114,7 +114,7 @@ describe('Logger', function(){
             $log.info('util.format(%j) => %s', {test:'test'}, '4');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[INFO] util.format({"test":"test"}) => 4\n');
+            expect(ioStream.read()).to.contain('[INFO] util.format({"test":"test"}) => 4');
 
         });
 
@@ -130,7 +130,7 @@ describe('Logger', function(){
             $log.error('ézeffà^');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[ERROR] ézeffà^\n');
+            expect(ioStream.read()).to.contain('[ERROR] ézeffà^');
 
         });
 
@@ -142,7 +142,7 @@ describe('Logger', function(){
             $log.error({test:'test'});
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[ERROR] {"test":"test"}\n');
+            expect(ioStream.read()).to.contain('[ERROR] {"test":"test"}');
 
 
         });
@@ -155,7 +155,7 @@ describe('Logger', function(){
             $log.error('util.format(%j) => %s', {test:'test'}, '4');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[ERROR] util.format({"test":"test"}) => 4\n');
+            expect(ioStream.read()).to.contain('[ERROR] util.format({"test":"test"}) => 4');
 
         });
 
@@ -182,7 +182,7 @@ describe('Logger', function(){
             $log.info('ézeffà^');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[INFO] ézeffà^\n');
+            expect(ioStream.read()).to.contain('[INFO] ézeffà^');
 
         });
 
@@ -194,7 +194,7 @@ describe('Logger', function(){
             $log.info({test:'test'});
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[INFO] {"test":"test"}\n');
+            expect(ioStream.read()).to.contain('[INFO] {"test":"test"}');
 
 
         });
@@ -207,7 +207,7 @@ describe('Logger', function(){
             $log.info('util.format(%j) => %s', {test:'test'}, '4');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.equal('[INFO] util.format({"test":"test"}) => 4\n');
+            expect(ioStream.read()).to.contain('[INFO] util.format({"test":"test"}) => 4');
 
         });
 
