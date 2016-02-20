@@ -122,9 +122,15 @@ class Logger{
         if(!this.logEnable) return this;
 
         var stackTrace = Logger.createStack();
-        var line = '\tat (' + stackTrace.split('\n')[0].split('(')[1];
+        var stackLine = stackTrace.split('\n')[0];
 
-        this.previousStd.write(this.colorize(line, "gray") + '\n\n');
+        if(stackLine.indexOf('(') > -1){
+            var line = '\tat (' + stackTrace.split('\n')[0].split('(')[1];
+        }else{
+            line = stackLine;
+        }
+
+        this.previousStd.write((this.colorize(line, "gray") || line) + '\n\n');
 
         return this;
     }
