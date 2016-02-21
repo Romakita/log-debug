@@ -30,8 +30,8 @@ class Logger{
      */
     constructor(stdout?:WritableStream, stderr?:WritableStream, noColors?:boolean){
 
-        this.stderr = stderr || process.stderr;
-        this.stdout = stdout || process.stdout;
+        this.setStderr(stderr || process.stderr);
+        this.setStdout(stdout || process.stdout);
 
         this.previousStd = this.stdout;
 

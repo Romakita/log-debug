@@ -1,4 +1,4 @@
-import * as Logger from '../../index';
+import * as Logger from '../index';
 import * as Chai from 'chai';
 import * as Stream from "stream";
 import {Writable} from "stream";
@@ -78,6 +78,18 @@ describe('Logger', function(){
 
         });
 
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+
+            $log.stop();
+
+            $log.debug('util.format(%j) => %s', {test:'test'}, '4');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
+
+        });
+
     });
 
     describe('info()', function(){
@@ -118,6 +130,17 @@ describe('Logger', function(){
 
         });
 
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+
+            $log.stop();
+
+            $log.info('util.format(%j) => %s', {test:'test'}, '4');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
+
+        });
     });
 
 
@@ -169,20 +192,32 @@ describe('Logger', function(){
             expect(ioStream.read()).to.be.a('string');
             expect(ioStream.read()).to.contain('[ERROR] EvalError: Test');
 
-        })
+        });
+
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+
+            $log.stop();
+
+            $log.error('util.format(%j) => %s', {test:'test'}, '4');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
+
+        });
 
     });
 
-    describe('info()', function(){
+    describe('warn()', function(){
 
         it('should print a debug log', function(){
 
             $log = new Logger.Logger(ioStream, ioStream, true);
 
-            $log.info('ézeffà^');
+            $log.warn('ézeffà^');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.contain('[INFO] ézeffà^');
+            expect(ioStream.read()).to.contain('[WARN ] ézeffà^');
 
         });
 
@@ -191,10 +226,10 @@ describe('Logger', function(){
 
             $log = new Logger.Logger(ioStream, ioStream, true);
 
-            $log.info({test:'test'});
+            $log.warn({test:'test'});
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.contain('[INFO] {"test":"test"}');
+            expect(ioStream.read()).to.contain('[WARN ] {"test":"test"}');
 
 
         });
@@ -204,10 +239,22 @@ describe('Logger', function(){
 
             $log = new Logger.Logger(ioStream, ioStream, true);
 
-            $log.info('util.format(%j) => %s', {test:'test'}, '4');
+            $log.warn('util.format(%j) => %s', {test:'test'}, '4');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.contain('[INFO] util.format({"test":"test"}) => 4');
+            expect(ioStream.read()).to.contain('[WARN ] util.format({"test":"test"}) => 4');
+
+        });
+
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+
+            $log.stop();
+
+            $log.warn('util.format(%j) => %s', {test:'test'}, '4');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
 
         });
 
@@ -225,7 +272,49 @@ describe('Logger', function(){
             expect(ioStream.read()).to.contain('at Context');
 
         });
+
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+            //$log.debug('test');
+            $log.stop();
+            $log.withTrace();
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
+
+        });
+
     });
+
+
+    describe('withLine()', function(){
+        it('should print message with line', function(){
+
+            $log = new Logger.Logger(ioStream, ioStream, true);
+            //$log.debug('test');
+            $log.withLine();
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.contain('at');
+
+        });
+
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+            //$log.debug('test');
+            $log.stop();
+            $log.withLine();
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
+
+
+            $log.start();
+
+        });
+
+    });
+
 
     describe('trace()', function() {
 
@@ -238,6 +327,30 @@ describe('Logger', function(){
             expect(ioStream.read()).to.be.a('string');
             expect(ioStream.read()).to.contain('[TRACE] test');
             expect(ioStream.read()).to.contain('at Context');
+
+        });
+
+        it('should print a stacktrace with a custom message', function(){
+
+            $log = new Logger.Logger(ioStream, ioStream, true);
+
+            $log.trace('test', 'test');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.contain('[TRACE] test test');
+            expect(ioStream.read()).to.contain('at Context');
+
+        });
+
+        it('should print nothing when log is disabled', function(){
+            $log = new Logger.Logger(ioStream, ioStream, true);
+
+            $log.stop();
+
+            $log.trace('util.format(%j) => %s', {test:'test'}, '4');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.equal('');
 
         });
 
