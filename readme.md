@@ -1,4 +1,7 @@
-# log-debug [![Build Status](https://travis-ci.org/Romakita/httpexceptions.svg?branch=master)](https://travis-ci.org/Romakita/httpexceptions)
+# log-debug 
+
+[![Build Status](https://travis-ci.org/Romakita/log-debug.svg?branch=master)](https://travis-ci.org/Romakita/log-debug)
+[![Coverage Status](https://coveralls.io/repos/github/Romakita/log-debug/badge.svg?branch=master)](https://coveralls.io/github/Romakita/log-debug?branch=master)
 
 > Provide logger written in TypeScript for TypeScript or JavaScript.
 

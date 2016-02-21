@@ -4,11 +4,11 @@
   "description": "Provide logger written in TypeScript for TypeScript or JavaScript.",
   "main": "index.js",
   "scripts": {
-    "build": "typings install && tsc",
     "preinstall": "typings install",
-    "install": "tsc",
-    "pretest": "typings install && tsc",
-    "test": "mocha"
+    "postinstall": "tsc",
+    "test": "mocha --reporter spec --check-leaks --bail test/",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
+    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
   },
   "repository": {
     "type": "git",
