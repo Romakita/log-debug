@@ -27,6 +27,7 @@
   "homepage": "https://github.com/romakita/log-debug",
   "devDependencies": {
     "chai": "^2.1.0",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "typescript": "^1.7.5"
   },
