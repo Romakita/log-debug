@@ -265,11 +265,11 @@ class Logger {
 
         }
 
-        name = this.colorize('['+ (name + ' ').slice(0, 5) +']', LOG_COLORS[name]);
+        name = this.colorize(date + '['+ (name + ' ').slice(0, 5) +']', LOG_COLORS[name]);
 
         var message = Logger.createMessage(data, args);
 
-        this.previousStd.write(date + name + message + '\n');
+        this.previousStd.write(name + message + '\n');
 
         return this;
     }
