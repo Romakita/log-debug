@@ -37,9 +37,11 @@ $log.debug('Test').
 ```
 
 ### new Logger(stdout[, stderr [, noColors]])
+### new Logger(options)
 **stdout**: `NodeJS.WritableStream`
 **stderr**: `NodeJS.WritableStream`
 **noColors**: `boolean`
+**options**: `ILoggerOptions`
 
 Creates a new `Logger` by passing one or two writable stream instances. `stdout` is a writable stream to print log or info output. `stderr` is used for warning or error output. If `stderr` isn't passed, the warning and error output will be sent to the stdout`.
 
@@ -63,6 +65,40 @@ The `$log` is a special `Logger` whose output is sent to `process.stdout` and `p
 
 ```typescript
 new $log.Logger(process.stdout, process.stderr);
+```
+
+##### ILoggerOptions
+
+* printDate : Print a date before log your message. (Date format : YYYY-MM-DD HH:MM:SS)
+* noColors : Enable colors
+* stdout : `NodeJS.WritableStream`
+* stderr : `NodeJS.WritableStream`
+* repporting : Object to enable or disable message printing for each output type (info, debug, trace, warn, error). By default all outputs are set to true. 
+
+``` typescript
+import * as $log from 'log-debug';
+let Logger = new $log.Logger({
+    printDate: true,
+    repporting: {
+        debug: false,
+        trace: false,
+        warn: false
+    }
+});
+
+// OR
+
+if(env == 'test'){
+    Logger.setSettings({
+        printDate: false,
+        repporting: {
+            debug: true,
+            error: true,
+            warn: true
+        }
+    });
+}
+
 ```
 
 #### Logger.debug(...args)

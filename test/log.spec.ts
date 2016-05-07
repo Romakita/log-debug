@@ -101,7 +101,7 @@ describe('Logger', function(){
             $log.info('ézeffà^');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.contain('[INFO] ézeffà^');
+            expect(ioStream.read()).to.contain('[INFO ] ézeffà^');
 
         });
 
@@ -113,7 +113,7 @@ describe('Logger', function(){
             $log.info({test:'test'});
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.contain('[INFO] {"test":"test"}');
+            expect(ioStream.read()).to.contain('[INFO ] {"test":"test"}');
 
 
         });
@@ -126,7 +126,7 @@ describe('Logger', function(){
             $log.info('util.format(%j) => %s', {test:'test'}, '4');
 
             expect(ioStream.read()).to.be.a('string');
-            expect(ioStream.read()).to.contain('[INFO] util.format({"test":"test"}) => 4');
+            expect(ioStream.read()).to.contain('[INFO ] util.format({"test":"test"}) => 4');
 
         });
 
@@ -356,9 +356,72 @@ describe('Logger', function(){
 
     });
 
+
+    describe('new Construtor options', function() {
+        it('should create new logger with options', function() {
+
+            $log = new Logger.Logger({
+                noColors: false,
+                stdout: ioStream,
+                stderr: ioStream,
+                printDate: true,
+                repporting: {
+                    debug: false,
+                    warn: false,
+                    info: false,
+                    error: false,
+                    trace: true
+                }
+            });
+
+            $log.trace('test');
+
+        });
+
+        it('should create new logger with options (not)', function(){
+            $log = new Logger.Logger({
+                noColors: false,
+                stdout: ioStream,
+                stderr: ioStream,
+                printDate: true,
+                repporting: {
+                    debug: false,
+                    warn: false,
+                    info: false,
+                    error: false
+                }
+            });
+
+            $log.setRepporting({trace: false});
+
+            $log.trace('test');
+
+            expect(ioStream.read()).to.be.a('string');
+            expect(ioStream.read()).to.not.contain('[TRACE] test');
+            expect(ioStream.read()).to.not.contain('at Context');
+
+            $log.debug('test').withTrace();
+            $log.info('test').withLine();
+            $log.warn('test');
+            $log.error('test');
+
+        });
+    });
+
     describe('Example rendering', function(){
 
         it('show', function(){
+
+            Logger
+                .info('info().withTrace()').withTrace()
+                .debug('debug().withLine()').withLine();
+
+            Logger
+                .warn('warn()')
+                .error('error()')
+                .trace('trace()');
+
+            Logger.setPrintDate(true);
 
             Logger
                 .info('info().withTrace()').withTrace()
