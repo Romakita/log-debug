@@ -2,8 +2,24 @@ require('source-map-support').install();
 
 import WritableStream = NodeJS.WritableStream;
 
-var util = require('util');
-var colors = require('colors/safe');
+let util = require('util');
+let colors = require('colors/safe');
+
+interface ILoggerRepporting {
+    info?: boolean;
+    debug?: boolean;
+    trace?: boolean;
+    error?: boolean;
+    warn?: boolean;
+}
+
+interface ILoggerOptions {
+    noColors?: boolean;
+    printDate?: boolean;
+    stderr?: WritableStream;
+    stdout?: WritableStream;
+    repporting?: ILoggerRepporting
+}
 
 const LOG_COLORS = {
     INFO:   'blue',
@@ -75,7 +91,7 @@ class Logger {
         if (typeof options === "object") {
 
             if (typeof (<any>options).write === "function") {
-                let stdout = <WritableStream> options;
+                let stdout: WritableStream = <WritableStream> options;
                 this.setStdout(stdout);
             } else {
                 this.setSettings(<ILoggerOptions> options);
@@ -250,16 +266,16 @@ class Logger {
         if (this.logEnable === false) return this;
         if (this.repporting[this.previousTypeTrace] === false) return this;
 
-        let date = '';
+        let date: string = '';
 
         if (this.printDate) {
-            let currentDate = new Date();
-            let year = currentDate.getFullYear();
-            let month = ('0' + (currentDate.getMonth()+1)).slice(-2);
-            let day = ('0' + (currentDate.getDate())).slice(-2);
-            let hours = ('0' + (currentDate.getHours())).slice(-2);
-            let minutes = ('0' + (currentDate.getMinutes())).slice(-2);
-            let seconds = ('0' + (currentDate.getSeconds())).slice(-2);
+            let currentDate: Date = new Date();
+            let year: number = currentDate.getFullYear();
+            let month: string = ('0' + (currentDate.getMonth()+1)).slice(-2);
+            let day: string = ('0' + (currentDate.getDate())).slice(-2);
+            let hours: string = ('0' + (currentDate.getHours())).slice(-2);
+            let minutes: string = ('0' + (currentDate.getMinutes())).slice(-2);
+            let seconds: string = ('0' + (currentDate.getSeconds())).slice(-2);
 
             date = `[${year}-${month}-${day} ${hours}:${minutes}:${seconds}]`;
 
@@ -406,6 +422,6 @@ class Logger {
     }
 }
 
-let $log = new Logger();
+let $log: Logger = new Logger();
 export = $log;
 $log.Logger = Logger;
