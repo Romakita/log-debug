@@ -4,6 +4,7 @@
   "description": "Provide logger written in TypeScript for TypeScript or JavaScript.",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc",
     "preinstall": "typings install",
     "postinstall": "tsc",
     "test": "mocha --reporter spec --check-leaks --bail test/",
@@ -29,7 +30,7 @@
     "chai": "^2.1.0",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
-    "typescript": "^1.7.5"
+    "typescript": "^1.8.10"
   },
   "dependencies": {
     "colors": "^1.1.0",
