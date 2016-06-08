@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Romakita/log-debug.svg?branch=master)](https://travis-ci.org/Romakita/log-debug)
 [![Coverage Status](https://coveralls.io/repos/github/Romakita/log-debug/badge.svg?branch=master)](https://coveralls.io/github/Romakita/log-debug?branch=master)
+[![TypeScript](https://badges.frapsoft.com/typescript/love/typescript.svg?v=100)](https://github.com/ellerbrock/typescript-badges/) 
+[![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100)](https://github.com/ellerbrock/typescript-badges/)
 
 > Provide logger written in TypeScript for TypeScript or JavaScript.
 
